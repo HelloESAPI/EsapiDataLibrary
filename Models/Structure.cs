@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Windows.Media;
 
 namespace EsapiDataLibrary.Models
@@ -14,6 +15,20 @@ namespace EsapiDataLibrary.Models
     public double MaxDose { get; set; }
     public double MeanDose { get; set; }
     public SolidColorBrush Color { get; set; }
+    public string RGBString { get; set; }
+
+    [JsonConstructor]
+    public Structure(string id, string dicomType, double volume, double maxDose, double meanDose, string rGBString)
+    {
+      string[] rgb = rGBString.Split(',');
+      Id = id;
+      DicomType = dicomType;
+      Volume = volume;
+      MaxDose = maxDose;
+      MeanDose = meanDose;
+      Color = new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)Int32.Parse(rgb[0]), (byte)Int32.Parse(rgb[1]), (byte)Int32.Parse(rgb[2])));
+      RGBString = rGBString;
+    }
 
     public Structure(string id, string dicomType, Random random)
     {
